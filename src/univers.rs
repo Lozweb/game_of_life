@@ -22,17 +22,22 @@ pub enum State{
 impl Universe {
 
     pub fn generate(size: usize) -> Universe{
+        
         let mut rng = rand::thread_rng();
+        
         let mut universe = Vec::with_capacity(size);
 
         for x in 0..size {
+            
             let mut row = Vec::with_capacity(size);
+            
             for y in 0..size {
-                let state = if rng.gen::<bool>() {
-                    State::Alive
-                } else {
-                    State::Dead
+                
+                let state = match rng.gen::<bool>() {
+                    true => Alive,
+                    false => Dead
                 };
+                
                 row.push(Cell { x, y, state });
             }
             universe.push(row);
@@ -40,8 +45,7 @@ impl Universe {
 
         Universe { universe }
     }
-
-    // todo Rewrite the functions so that our universe can be of shapes other than square
+    
     pub fn out_min (&self, value:usize) -> bool {
 
         usize::overflowing_sub(value, 1).1

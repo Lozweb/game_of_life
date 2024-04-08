@@ -11,12 +11,12 @@ fn main() {
     // our univers only square 5x5,4x4,3x3...
     clear_terminal();
 
-    let mut universe = Universe::generate(35);
+    let mut universe = Universe::generate(30);
 
     loop {
         display_universe(&universe);
         universe = Universe::calculate_future(&universe);
-        thread::sleep(Duration::from_secs(1));
+        thread::sleep(Duration::from_millis(100));
     }
 
 }
@@ -29,11 +29,11 @@ fn display_universe(universe: &Universe) -> (){
 
     let mut display = String::new();
 
-    for (_, line) in universe.universe.iter().enumerate() {
+    for line in universe.universe.iter() {
 
         let mut display_line = String::new();
 
-        for (_, cell) in line.iter().enumerate() {
+        for cell in line.iter() {
             display_line.push_str(match cell.state {
                 Alive => " o ",
                 Dead => "   "

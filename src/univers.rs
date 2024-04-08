@@ -45,16 +45,6 @@ impl Universe {
 
         Universe { universe }
     }
-    
-    pub fn out_min (&self, value:usize) -> bool {
-
-        usize::overflowing_sub(value, 1).1
-    }
-
-    pub fn out_max(&self, value:usize) -> bool {
-
-        (value + 1) > (self.universe.len() - 1)
-    }
 
     pub fn apply_rules(&self, x:usize, y:usize)-> State{
 
@@ -96,6 +86,7 @@ impl Universe {
     }
 }
 
+
 impl Cell {
     pub fn voisin_by_state(universe: &Universe, x:usize, y:usize, state: State) -> Vec<&Cell> {
         let voisins = Self::find_voisin(universe, x, y);
@@ -108,47 +99,24 @@ impl Cell {
         result
     }
     pub fn find_voisin (universe: &Universe,x:usize,y:usize) -> Vec<&Cell>{
-        let mut mes_voisins:Vec<&Cell> = Vec::new();
-        //gauche
-        if !universe.out_min(y){
-            mes_voisins.push(&universe.universe[x][y-1]);
+        let mut mes_voisins: Vec<&Cell> = Vec::new();
+        
+        let neighbors_positions = [
+            (-1, -1), (-1, 0),  (-1, 1),
+            (0, -1),            (0, 1),
+            (1, -1),  (1, 0),   (1, 1),
+        ];
+
+        for (dx, dy) in &neighbors_positions {
+            let nx = x as isize + *dx;
+            let ny = y as isize + *dy;
+
+            if nx >= 0 && nx < universe.universe.len() as isize &&
+                ny >= 0 && ny < universe.universe[0].len() as isize {
+                mes_voisins.push(&universe.universe[nx as usize][ny as usize]);
+            }
         }
 
-        //droite
-        if !universe.out_max(y) {
-            mes_voisins.push(&universe.universe[x][y+1])
-        }
-
-        //haut
-        if !universe.out_min(x) {
-            mes_voisins.push(&universe.universe[x-1][y])
-        }
-
-        //haut gauche
-        if !universe.out_min(x) && !universe.out_min(y){
-            mes_voisins.push(&universe.universe[x-1][y-1])
-        }
-
-        //haut droite
-        if !universe.out_min(x) && !universe.out_max(y){
-            mes_voisins.push(&universe.universe[x-1][y+1])
-        }
-
-        //bas
-        if !universe.out_max(x) {
-            mes_voisins.push(&universe.universe[x+1][y])
-        }
-
-        //bas gauche
-        if !universe.out_max(x) && !universe.out_min(y) {
-            mes_voisins.push(&universe.universe[x+1][y-1])
-        }
-
-        //bas droite
-        if !universe.out_max(x) && !universe.out_max(y) {
-            mes_voisins.push(&universe.universe[x+1][y+1])
-        }
-
-        return mes_voisins;
+        mes_voisins
     }
 }

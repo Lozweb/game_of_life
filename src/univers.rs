@@ -21,17 +21,17 @@ pub enum State{
 
 impl Universe {
 
-    pub fn generate(size: usize) -> Universe{
+    pub fn generate(size_x: usize, size_y:usize) -> Universe{
         
         let mut rng = rand::thread_rng();
         
-        let mut universe = Vec::with_capacity(size);
+        let mut universe = Vec::with_capacity(size_x);
 
-        for x in 0..size {
+        for x in 0..size_x {
             
-            let mut row = Vec::with_capacity(size);
+            let mut row = Vec::with_capacity(size_y);
             
-            for y in 0..size {
+            for y in 0..size_y {
                 
                 let state = match rng.gen::<bool>() {
                     true => Alive,

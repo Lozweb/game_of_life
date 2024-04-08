@@ -11,7 +11,7 @@ fn main() {
     // our univers only square 5x5,4x4,3x3...
     clear_terminal();
 
-    let mut universe = Universe::generate(30);
+    let mut universe = Universe::generate(10, 30);
 
     loop {
         display_universe(&universe);
